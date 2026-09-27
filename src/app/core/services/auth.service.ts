@@ -22,7 +22,7 @@ export class AuthService {
     );
 
     readonly isAuthenticated = computed(() => !!this.username());
-    readonly idAdmin = computed(() => this.role() === 'ADMIN');
+    readonly isAdmin = computed(() => this.role() === 'ADMIN');
 
     login(request: LoginRequestDTO): Observable<LoginResponseDTO> {
         return this.http.post<LoginResponseDTO>(`${this,this.baseUrl}/login`, request).pipe(

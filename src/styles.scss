@@ -1,3 +1,35 @@
+@font-face {
+    font-family: "Poppins";
+    src: url("/assets/fonts/Poppins-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/assets/fonts/Poppins-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/assets/fonts/Poppins-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/assets/fonts/Poppins-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --color-primary: #f38300;
     --color-primary-dark: #cc6f00;
@@ -10,8 +42,8 @@
     --color-border: #e0e0e0;
 
     --color-danger: #ff0000;
-  --color-success: #2e7d32;
-  --color-warning: #f9a825;
+    --color-success: #2e7d32;
+    --color-warning: #f9a825;
 
     --spacing-xs: 4px;
     --spacing-sm: 8px;
@@ -19,7 +51,7 @@
     --spacing-lg: 24px;
     --spacing-xl: 32px;
 
-    --font-family-base: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-family-base: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {
