@@ -3,6 +3,7 @@ import { computed, inject, Injectable, signal } from "@angular/core";
 import { Router } from "@angular/router";
 import { LoginRequestDTO, LoginResponseDTO, RefreshTokenRequestDTO } from "../models/auth.model";
 import { Observable, tap } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 const ACCESS_TOKEN_KEY = 'carmoloc_access_token';
 const REFRESH_TOKEN_KEY = 'carmoloc_refresh_token';
@@ -14,7 +15,7 @@ export class AuthService {
     private readonly http = inject(HttpClient);
     private readonly router = inject(Router);
 
-    private readonly baseUrl = '/api/auth';
+    private readonly baseUrl = `${environment.apiUrl}/api/auth`;
 
     readonly username = signal<string | null>(localStorage.getItem(USERNAME_KEY));
     readonly role = signal<'ADMIN' | 'EMPLOYEE' | null>(

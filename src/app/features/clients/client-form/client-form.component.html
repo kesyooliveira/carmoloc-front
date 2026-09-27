@@ -1,0 +1,52 @@
+<h1>{{ isEditMode() ? 'Editar Cliente' : 'Novo Cliente' }}</h1>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Nome</label>
+    <input type="text" formControlName="name" />
+
+    <label>Tipo de Documento</label>
+    <select formControlName="documentType">
+        <option value="CPF">CPF</option>
+        <option value="CNPJ">CNPJ</option>
+    </select>
+
+    <label>Documento</label>
+    <input type="text" formControlName="document" />
+
+    <label>Telefone</label>
+    <input type="text" formControlName="phone" />
+
+    <label>Email</label>
+    <input type="email" formControlName="email" />
+
+    <label>Descrição</label>
+    <textarea formControlName="description"></textarea>
+
+    <fieldset formGroupName="address">
+        <legend>Endereço</legend>
+
+        <label>Rua</label>
+        <input type="text" formControlName="street" />
+
+        <label>Número</label>
+        <input type="text" formControlName="number" />
+
+        <label>Bairro</label>
+        <input type="text" formControlName="neighborhood" />
+
+        <label>Cidade</label>
+        <input type="text" formControlName="city" />
+
+        <label>Estado (UF)</label>
+        <input type="text" formControlName="state" maxlength="2" />
+
+        <label>CEP</label>
+        <input type="text" formControlName="zipCode" />
+    </fieldset>
+
+    @if (errorMessage()) {
+        <div class="form-error">{{ errorMessage() }}</div>
+    }
+
+    <button type="submit" [disabled]="isLoading()">Salvar</button>
+</form>

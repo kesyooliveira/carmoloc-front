@@ -1,0 +1,36 @@
+<div class="page-header">
+    <h1>Clientes</h1>
+    <a routerLink="/clients/new" class="btn-primary">Novo Cliente</a>
+</div>
+
+@if (isLoading()) {
+    <p>Carregando...</p>
+} @else if (clients().length === 0) {
+    <p>Nenhum cliente cadastrado.</p>
+} @else {
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Documento</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (client of clients(); track client.id) {
+            <tr>
+                <td>{{ client.name }}</td>
+                <td>{{ client.document }} ({{ client.documentType }})</td>
+                <td>{{ client.phone }}</td>
+                <td class="actions">
+                    <a [routerLink]="['/clients', client.id, 'edit']">Editar</a>
+                    @if (authService.isAdmin()) {
+                    <button (click)="delete(client.id)" class="btn-danger">Excluir</button>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}

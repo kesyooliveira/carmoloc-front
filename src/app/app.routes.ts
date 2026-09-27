@@ -11,7 +11,22 @@ export const routes: Routes = [
         canActivate: [authGuard],
         loadComponent: () => import('./layout/private-layout/private-layout.component').then(m => m.PrivateLayoutComponent),
         children: [
-            { path: '', redirectTo: 'clients', pathMatch: 'full' },
+            { path: '', 
+                redirectTo: 'clients', 
+                pathMatch: 'full' 
+            },
+            {
+                path: 'clients',
+                loadComponent: () => import('./features/clients/client-list/client-list.component').then(m => m.ClientListComponent)
+            },
+            {
+                path: 'clients/new',
+                loadComponent: () => import('./features/clients/client-form/client-form.component').then(m => m.ClientFormComponent)
+            },
+            {
+                path: 'clients/:id/edit',
+                loadComponent: () => import('./features/clients/client-form/client-form.component').then(m => m.ClientFormComponent)
+            },
         ]
     },
     {
