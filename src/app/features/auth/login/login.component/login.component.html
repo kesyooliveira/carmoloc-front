@@ -1,0 +1,31 @@
+<div class="login-page">
+    <div class="login-card">
+        <img src="assets/logo/carmoloc-logo-big.png" alt="CarmoLoc" class="login-logo">
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <label for="username">Usuário</label>
+            <input id="username" type="text" formControlName="username" placeholder=""/>
+            @if (form.get('username')?.invalid && form.get('username')?.touched) {
+                <span class="field-error">Usuário é obrigatório</span>
+            }
+
+            <label for="password">Senha</label>
+            <input id="password" type="password" formControlName="password" placeholder=""/>
+            @if (form.get('password')?.invalid && form.get('password')?.touched) {
+                <span class="field-error">Senha é obrigatória</span>
+            }
+
+            @if (errorMessage()) {
+                <div class="form-error">{{ errorMessage() }}</div>
+            }
+
+            <button type="submit" [disabled]="isLoading()">
+                @if (isLoading()) {
+                    Entrando...
+                } @else {
+                    Entrar
+                }
+            </button>
+        </form>
+    </div>
+</div>
