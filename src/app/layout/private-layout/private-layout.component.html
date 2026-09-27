@@ -1,0 +1,23 @@
+<div class="layout">
+    <header class="topbar">
+        <button class="menu-toggle" (click)="toggleSideBar()">☰</button>
+        <img src="assets/logo/carmoloc-logo-big.png" alt="Carmoloc" class="topbar-logo" />
+        <div class="topbar-user">
+            <span>{{ authService.username() }}</span>
+            <button (click)="logout()">Sair</button>
+        </div>
+    </header>
+
+    <nav class="sidebar" [class.open]="isSidebarOpen()">
+        <a routerLink="/clients" routerLinkActive="active">Clientes</a>
+        <a routerLink="/equipment" routerLinkActive="active">Equipamentos</a>
+        <a routerLink="/rental-orders" routerLinkActive="active">Ordens de Locação</a>
+        @if (authService.isAdmin()) {
+        <a routerLink="/users" routerLinkActive="active">Usuários</a>
+        }
+    </nav>
+
+    <main class="content">
+        <router-outlet />
+    </main>
+</div>
