@@ -3,11 +3,16 @@ h1 {
     font-size: 1.5rem;
 }
 
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
 form {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
-    max-width: 480px;
+    width: 580px;
     background: var(--color-surface);
     padding: var(--spacing-lg);
     border-radius: 8px;
@@ -44,6 +49,21 @@ fieldset {
         padding: 0 var(--spacing-sm);
         font-weight: 600;
         color: var(--color-text-secondary);
+    }
+
+    .info {
+        display: flex;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-sm);
+
+        label {
+            flex: 1;
+            max-width: calc(20% - var(--spacing-sm));
+        }
+
+        input {
+            flex: 1;
+        }
     }
 }
 

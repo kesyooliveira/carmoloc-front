@@ -1,0 +1,5 @@
+<div class="pagination">
+    <button (click)="previous()" [disabled]="!hasPrevious">← Anterior</button>
+    <span>Página {{ pageNumber() + 1 }} de {{ totalPages() }} ({{ totalElements() }} itens)</span>
+    <button (click)="next()" [disabled]="!hasNext">Próxima →</button>
+</div>

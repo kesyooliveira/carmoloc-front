@@ -33,4 +33,11 @@
             }
         </tbody>
     </table>
+
+    <app-pagination
+        [pageNumber]="pageNumber()"
+        [totalPages]="totalPages()"
+        [totalElements]="totalElements()"
+        (pageChange)="onPageChange($event)"
+    />
 }

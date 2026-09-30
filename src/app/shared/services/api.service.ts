@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { PageResponseDTO } from '../models/page-response.model';
 
 export abstract class ApiService<TResponse, TRequest = TResponse> {
 
@@ -15,6 +16,18 @@ export abstract class ApiService<TResponse, TRequest = TResponse> {
 
     findAll(): Observable<TResponse[]> {
         return this.http.get<TResponse[]>(this.baseUrl);
+    }
+
+    findAllPaged(page: number = 0, size: number = 10, sort?: string): Observable<PageResponseDTO<TResponse>> {
+        let params = new HttpParams()
+            .set('page', page)
+            .set('size', size);
+
+        if (sort) {
+            params = params.set('sort', sort);
+        }
+
+        return this.http.get<PageResponseDTO<TResponse>>(this.baseUrl, { params });
     }
 
     findById(id: string): Observable<TResponse> {
