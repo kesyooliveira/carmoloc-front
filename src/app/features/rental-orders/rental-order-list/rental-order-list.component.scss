@@ -54,7 +54,6 @@
         color: var(--color-primary);
         text-decoration: none;
         font-weight: 600;
-        margin-right: 10px;
     }
 }
 
@@ -65,6 +64,44 @@
     cursor: pointer;
     font-weight: 600;
     padding: 0;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.status-badge {
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    &.status-quote {
+        background: color-mix(in srgb, var(--color-warning) 20%, transparent);
+        color: #a06800;
+    }
+    &.status-active {
+        background: color-mix(in srgb, var(--color-success) 20%, transparent);
+        color: var(--color-success);
+    }
+    &.status-finished {
+        background: var(--color-border);
+        color: var(--color-text-secondary);
+    }
+    &.status-cancelled {
+        background: color-mix(in srgb, var(--color-danger) 20%, transparent);
+        color: var(--color-danger);
+    }
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0;
+    margin-right: 10px;
 
     &:hover {
         text-decoration: underline;

@@ -1,0 +1,57 @@
+<div class="page-header">
+    <h1>Ordens de Locação</h1>
+    <a routerLink="/rental-orders/new" class="btn-primary">Nova Ordem</a>
+</div>
+
+@if (actionError()) {
+    <div class="form-error">{{ actionError() }}</div>
+}
+
+@if (isLoading()) {
+    <p>Carregando...</p>
+} @else if (orders().length === 0) {
+    <p>Nenhuma ordem cadastrada.</p>
+} @else {
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Itens</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (order of orders(); track order.id) {
+                <tr>
+                    <td>{{ order.clientName }}</td>
+                    <td>
+                        <span class="status-badge" [class]="'status-' + order.status.toLocaleLowerCase()">
+                            {{ statusLabel(order.status) }}
+                        </span>
+                    </td>
+                    <td>{{ order.totalAmount | currency:'BRL' }}</td>
+                    <td>{{ order.items.length }}</td>
+                    <td class="actions">
+                        @if (order.status === 'QUOTE') {
+                            <button (click)="confirm(order.id)" class="btn-link">Confirmar</button>
+                            <button (click)="cancel(order.id)" class="btn-danger">Cancelar</button>
+                        }
+                        @if (order.status === 'ACTIVE') {
+                            <button (click)="finish(order.id)" class="btn-link">Finalizar</button>
+                            <button (click)="cancel(order.id)" class="btn-danger">Cancelar</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <app-pagination
+        [pageNumber]="pageNumber()"
+        [totalPages]="totalPages()"
+        [totalElements]="totalElements()"
+        (pageChange)="onPageChange($event)"
+    />
+}

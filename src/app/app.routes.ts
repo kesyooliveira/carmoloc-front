@@ -27,6 +27,10 @@ export const routes: Routes = [
                 path: 'clients/:id/edit',
                 loadComponent: () => import('./features/clients/client-form/client-form.component').then(m => m.ClientFormComponent)
             },
+            {
+                path: 'rental-orders',
+                loadComponent: () => import('./features/rental-orders/rental-order-list/rental-order-list.component').then(m => m.RentalOrderListComponent)
+            }
         ]
     },
     {

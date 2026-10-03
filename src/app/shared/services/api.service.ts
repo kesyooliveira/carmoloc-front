@@ -10,7 +10,7 @@ export abstract class ApiService<TResponse, TRequest = TResponse> {
         protected readonly path: string
     ) { }
 
-    private get baseUrl(): string {
+    public get baseUrl(): string {
         return `${environment.apiUrl}${this.path}`
     }
 
