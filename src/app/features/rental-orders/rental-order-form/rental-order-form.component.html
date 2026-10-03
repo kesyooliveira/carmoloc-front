@@ -1,1 +1,60 @@
-<p>rental-order-form works!</p>
+<h1>Nova Ordem de Locação</h1>
+
+<div class="form-wrapper">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <label>Cliente</label>
+        <select formControlName="clientId">
+            <option value="" disabled>Selecione um cliente</option>
+            @for (client of clients(); track client.id) {
+                <option [value]="client.id">{{ client.name }}</option>
+            }
+        </select>
+
+        <div formArrayName="items" class="items-section">
+            <h2>Itens</h2>
+
+            @for (item of items.controls; track $index; let i = $index) {
+                <div [formGroupName]="i" class="item-row">
+                    <div class="info">
+                        <label>Equipamento</label>
+                        <select formControlName="equipmentId">
+                            <option value="" disabled>Selecione</option>
+                            @for (equipment of equipmentList(); track equipment.id) {
+                                <option [value]="equipment.id">
+                                    {{ equipment.name }} ({{ equipment.availableUnits }} disponíveis)
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="info">
+                        <label>Quantidade</label>
+                        <input type="number" formControlName="quantity" min="1" />
+                    </div>
+
+                    <div class="info">
+                        <label>Início</label>
+                        <input type="datetime-local" formControlName="startDateTime" />
+                    </div>
+
+                    <div class="info">
+                        <label>Fim</label>
+                        <input type="datetime-local" formControlName="endDateTime" />
+                    </div>
+
+                    @if (items.length > 1) {
+                        <button type="button" (click)="removeItem(i)" class="btn-remove">Remover</button>
+                    }
+                </div>
+            }
+
+            <button type="button" (click)="addItem()" class="btn-secondary">+ Adicionar Item</button>
+        </div>
+
+        @if (errorMessage()) {
+            <div class="form-error">{{ errorMessage() }}</div>
+        }
+
+        <button type="submit" [disabled]="isLoading()">Salvar Cotação</button>
+    </form>
+</div>

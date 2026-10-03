@@ -27,7 +27,7 @@ export abstract class ApiService<TResponse, TRequest = TResponse> {
             params = params.set('sort', sort);
         }
 
-        return this.http.get<PageResponseDTO<TResponse>>(this.baseUrl, { params });
+        return this.http.get<PageResponseDTO<TResponse>>(`${this.baseUrl}/paged`, { params });
     }
 
     findById(id: string): Observable<TResponse> {

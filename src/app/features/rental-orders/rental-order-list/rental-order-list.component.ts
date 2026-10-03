@@ -30,7 +30,7 @@ export class RentalOrderListComponent {
 
     private loadOrders(): void {
         this.isLoading.set(true);
-        this.rentalOrderService.findAllPaged(this.pageNumber(), this.pageSize(), 'createdAt,asc').subscribe({
+        this.rentalOrderService.findAllPaged(this.pageNumber(), this.pageSize(), 'createdAt,desc').subscribe({
             next: page => {
                 this.orders.set(page.content);
                 this.totalElements.set(page.totalElements);
