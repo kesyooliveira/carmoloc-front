@@ -1,0 +1,60 @@
+<div class="page-header">
+    <div>
+        <a routerLink="/equipment" class="back-link">← Voltar</a>
+        <h1>Unidades — {{ equipment()?.name }}</h1>
+    </div>
+    <button (click)="toggleAddUnits()" class="btn-primary">
+        {{ isAddingUnits() ? 'Cancelar' : '+ Adicionar Unidades' }}
+    </button>
+</div>
+
+@if (isAddingUnits()) {
+    <form [formGroup]="addUnitsForm" (ngSubmit)="submitAddUnits()" class="add-units-form">
+        <label>Quantidade de novas unidades</label>
+        <input type="number" formControlName="quantity" min="1" />
+        <button type="submit">Confirmar</button>
+    </form>
+}
+
+@if (errorMessage()) {
+    <div class="form-error">{{ errorMessage() }}</div>
+}
+
+@if (isLoading()) {
+    <p>Carregando...</p>
+} @else if (units().length === 0) {
+    <p>Nenhuma unidade cadastrada.</p>
+} @else {
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Status</th>
+                <th>Observação</th>
+                <th>Alterar status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (unit of units(); track unit.id) {
+            <tr>
+                <td>{{ unit.assetCode ?? '—' }}</td>
+                <td>
+                    <span class="status-badge" [class]="'status-' + unit.status.toLowerCase()">
+                        {{ statusLabel(unit.status) }}
+                    </span>
+                </td>
+                <td>{{ unit.maintenanceNote ?? '—' }}</td>
+                <td class="actions">
+                    @for (status of statusOptions; track status) {
+                    @if (status !== unit.status) {
+                    <button (click)="changeStatus(unit.id, status)" class="btn-link">
+                        {{ statusLabel(status) }}
+                    </button>
+                    }
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}

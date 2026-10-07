@@ -1,0 +1,52 @@
+<div class="page-header">
+    <h1>Equipamentos</h1>
+    <a routerLink="/equipment/new" class="btn-primary">Novo Equipamento</a>
+</div>
+
+@if (isLoading()) {
+    <p>Carregando...</p>
+} @else if (equipmentList().length === 0) {
+    <p>Nenhum equipamento cadastrado.</p>
+} @else {
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Status</th>
+                <th>Unidades</th>
+                <th>Diária</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (equipment of equipmentList(); track equipment.id) {
+                <tr>
+                    <td>{{ equipment.name }}</td>
+                    <td>{{ categoryLabel(equipment.category) }}</td>
+                    <td>
+                        <span class="status-badge" [class]="'status-' + equipment.status.toLocaleLowerCase()">
+                            {{ statusLabel(equipment.status) }}
+                        </span>
+                    </td>
+                    <td>{{ equipment.availableUnits }} / {{ equipment.totalUnits }}</td>
+                    <td>{{ equipment.dailyPrice | currency:'BRL' }}</td>
+                    <td class="actions">
+                        <a [routerLink]="['/equipment', equipment.id, 'edit']">Editar</a>
+                        <a [routerLink]="['/equipment', equipment.id, 'units']">Unidades</a>
+                        @if (authService.isAdmin()) {
+                            <button (click)="delete(equipment.id)" class="btn-danger">Excluir</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <app-pagination
+        [pageNumber]="pageNumber()"
+        [totalPages]="totalPages()"
+        [totalElements]="totalElements()"
+        (pageChange)="onPageChange($event)"
+    />
+}

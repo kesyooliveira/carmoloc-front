@@ -34,7 +34,23 @@ export const routes: Routes = [
             {
                 path: 'rental-orders/new',
                 loadComponent: () => import('./features/rental-orders/rental-order-form/rental-order-form.component').then(m => m.RentalOrderFormComponent)
-            }
+            },
+            {
+                path: 'equipment',
+                loadComponent: () => import('./features/equipment/equipment-list/equipment-list.component').then(m => m.EquipmentListComponent)
+            },
+            {
+                path: 'equipment/new',
+                loadComponent: () => import('./features/equipment/equipment-form/equipment-form.component').then(m => m.EquipmentFormComponent)
+            },
+            {
+                path: 'equipment/:id/edit',
+                loadComponent: () => import('./features/equipment/equipment-form/equipment-form.component').then(m => m.EquipmentFormComponent)
+            },
+            {
+                path: 'equipment/:id/units',
+                loadComponent: () => import('./features/equipment/equipment-units/equipment-units.component').then(m => m.EquipmentUnitsComponent)
+            },
         ]
     },
     {

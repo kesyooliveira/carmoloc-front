@@ -1,0 +1,43 @@
+<h1>{{ isEditMode() ? 'Editar Equipamento' : 'Novo Equipamento' }}</h1>
+
+<div class="form-wrapper">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <label>Nome</label>
+        <input type="text" formControlName="name" />
+
+        <label>Descrição</label>
+        <textarea formControlName="description"></textarea>
+
+        <label>Categoria</label>
+        <select formControlName="category">
+            @for (cat of categories; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+            }
+        </select>
+
+        <label>Tipo de Precificação</label>
+        <select formControlName="pricingType">
+            <option value="DAILY_ONLY">Somente Diária</option>
+            <option value="DAY_AND_HALF">Diária + Meia-Diária</option>
+        </select>
+
+        <label>Preço da Diária</label>
+        <input type="number" formControlName="dailyPrice" min="0" step="0.01" />
+
+        @if (isDayAndHalf) {
+        <label>Preço da Meia-Diária</label>
+        <input type="number" formControlName="halfDayPrice" min="0" step="0.01" />
+        }
+
+        @if (!isEditMode()) {
+        <label>Quantidade de Unidades</label>
+        <input type="number" formControlName="quantity" min="1" />
+        }
+
+        @if (errorMessage()) {
+        <div class="form-error">{{ errorMessage() }}</div>
+        }
+
+        <button type="submit" [disabled]="isLoading()">Salvar</button>
+    </form>
+</div>
