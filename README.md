@@ -1,59 +1,53 @@
-# CarmoLocFront
+# Carmoloc Front
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.0.
+Front-end em Angular para a Carmoloc API — sistema interno de gestão para locadora de máquinas e equipamentos de construção civil (clientes, catálogo de equipamentos com unidades rastreáveis, ordens de locação, usuários e controle de acesso por papel).
 
-## Development server
+Construído com Angular moderno (standalone, Signals, novo control flow), sem frameworks de UI prontos — estilização própria sobre design tokens, como exercício deliberado de CSS.
 
-To start a local development server, run:
+## Stack
 
-```bash
-ng serve
+- **Angular 22** (standalone components, sem NgModules)
+- **Signals** para estado reativo local e global
+- **Reactive Forms** (incluindo `FormArray` para listas dinâmicas de itens)
+- **RxJS** para composição de fluxos assíncronos (ex. coordenação de refresh de token)
+- **SCSS** com design tokens via CSS Custom Properties — sem bibliotecas de UI
+- **TypeScript** estrito
+
+## Destaques de arquitetura
+
+### Organização por feature, com `core`/`shared` separados do domínio
+
+```
+core/        → guards, interceptors, serviços e modelos transversais (existem uma única vez na app)
+shared/      → componentes e serviços reutilizáveis entre features, sem conhecimento de regra de negócio
+layout/      → casco estrutural da área autenticada (header, sidebar), responsivo via CSS adaptativo
+features/    → um domínio por pasta (auth, clients, equipment, rental-orders, users),
+               espelhando a divisão do back-end
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Autenticação completa, com refresh automático e transparente
 
-## Code scaffolding
+- Interceptor HTTP funcional (`HttpInterceptorFn`) que injeta o token em toda requisição autenticada.
+- Em caso de `401`, o interceptor **pausa a requisição original, dispara o refresh, e reenvia** automaticamente — sem o usuário perceber nem precisar logar de novo.
+- **Coordenação de múltiplos 401 simultâneos**: se várias requisições expiram ao mesmo tempo, apenas a primeira dispara um refresh de verdade; as demais aguardam o resultado e reaproveitam o novo token, evitando corrida contra a rotação de refresh token do back-end.
+- Guards funcionais (`CanActivateFn`) para rotas autenticadas e rotas restritas a administradores.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### `ApiService` genérico como base de reuso real (não forçado)
 
-```bash
-ng generate component component-name
-```
+Diferente de abstrações de back-end — onde regra de negócio costuma divergir demais entre entidades para justificar uma classe base —, no front o padrão de chamada HTTP (`GET`/`POST`/`PUT`/`DELETE` contra uma URL) é genuinamente uniforme entre `Client`, `Equipment`, `RentalOrder` e `User`. Um `ApiService<TResponse, TRequest>` abstrato cobre o CRUD padrão; cada serviço específico estende e adiciona apenas o que tem de próprio (ex. `RentalOrderService.confirm()`, `EquipmentService.addUnits()`).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Paginação como componente de apresentação reutilizável
 
-```bash
-ng generate --help
-```
+Um componente `Pagination` "burro" (sem conhecimento de domínio), comunicando-se via `input()`/`output()` baseados em Signal — reutilizado em qualquer listagem paginada da aplicação sem duplicar template ou lógica de navegação entre páginas.
 
-## Building
+### Formulários complexos com Reactive Forms
 
-To build the project run:
+O formulário de ordem de locação usa `FormArray` para uma lista de itens de tamanho variável (cada um com seu próprio equipamento, quantidade e período), permitindo adicionar/remover itens dinamicamente antes de submeter — espelhando a estrutura de agregado (`RentalOrder` + N `RentalOrderItem`) do back-end.
 
-```bash
-ng build
-```
+### Responsivo sem duplicar componentes por plataforma
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Um único layout autenticado (`PrivateLayout`), adaptado via CSS Grid + media queries — sidebar fixa no desktop, menu retrátil no mobile — em vez de componentes de layout separados por dispositivo, evitando duplicação de lógica para uma UI que não exige fluxos de navegação genuinamente diferentes entre plataformas.
 
-## Running unit tests
+### Identidade visual própria
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Fonte (Poppins) hospedada localmente via `@font-face`, paleta de cores da marca como CSS Custom Properties — permitindo evolução de tema (ex. modo escuro) sem recompilar.
