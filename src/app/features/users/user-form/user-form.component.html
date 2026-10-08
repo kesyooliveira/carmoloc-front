@@ -1,0 +1,40 @@
+<h1>{{ isEditMode() ? 'Editar Usuário' : 'Novo Usuário' }}</h1>
+
+<div class="form-wrapper">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        @if (!isEditMode()) {
+            <label>Usuário (login)</label>
+            <input type="text" formControlName="username" />
+        }
+
+        <label>Nome completo</label>
+        <input type="text" formControlName="fullName" />
+
+        <label>Email</label>
+        <input type="email" formControlName="email" />
+        
+        @if (!isEditMode()) {
+            <label>Senha</label>
+            <input type="password" formControlName="password" />
+
+            <label>Confirmar Senha</label>
+            <input type="password" formControlName="passwordConfirm" />
+
+            @if (form.errors?.['passwordMismatch'] && form.get('passwordConfirm')?.touched) {
+                <span class="field-error">As senhas devem ser iguais</span>
+            }
+        }
+
+        <label>Perfil</label>
+        <select formControlName="role">
+            <option value="EMPLOYEE">Funcionário</option>
+            <option value="ADMIN">Administrador</option>
+        </select>
+
+        @if (errorMessage()) {
+            <div class="form-error">{{ errorMessage() }}</div>
+        }
+
+        <button type="submit" [disabled]="isLoading()">Salvar</button>
+    </form>
+</div>
